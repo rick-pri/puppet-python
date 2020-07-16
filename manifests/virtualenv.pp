@@ -132,7 +132,7 @@ define python::virtualenv (
       "-p ${python}",
       "${venv_dir} &&",
       "${pip_cmd} wheel --help > /dev/null 2>&1 &&",
-      "{ ${pip_cmd} wheel --version > /dev/null 2>&1 || wheel_support_flag='--no-use-wheel'; };",
+      "{ ${pip_cmd} wheel --version > /dev/null 2>&1 || wheel_support_flag='--no-binary :all:'; };",
       "{ ${pip_cmd} --log ${venv_dir}/pip.log install ${pypi_index} \$wheel_support_flag --upgrade pip setuptools || ${pip_cmd} --log ${venv_dir}/pip.log install ${pypi_index}  --upgrade pip setuptools ;}",
     ]
 
@@ -150,7 +150,7 @@ define python::virtualenv (
 
     if $requirements {
       exec { "python_requirements_initial_install_${requirements}_${venv_dir}":
-        command     => "${pip_cmd} wheel --help > /dev/null 2>&1 && { ${pip_cmd} wheel --version > /dev/null 2>&1 || wheel_support_flag='--no-use-wheel'; } ; ${pip_cmd} --log ${venv_dir}/pip.log install ${pypi_index} \$wheel_support_flag -r ${requirements} ${extra_pip_args}",
+        command     => "${pip_cmd} --log ${venv_dir}/pip.log install ${pypi_index} ${proxy_flag} --no-binary :all: -r ${requirements} ${extra_pip_args}",
         refreshonly => true,
         timeout     => $timeout,
         user        => $owner,
