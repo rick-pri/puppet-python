@@ -40,6 +40,9 @@
 # @param [*timeout*]
 #  The maximum time in seconds the "pip install" command should take. Default: 1800
 #
+# @param [*tries*]
+#  The maximum number of times that the command will trie to execute. Default: 3
+#
 # @param [*extra_pip_args*]
 #  Extra arguments to pass to pip after requirements file.  Default: blank
 
@@ -66,6 +69,7 @@ define python::virtualenv (
   Array $path                            = [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
   $cwd                                   = undef,
   Integer $timeout                       = 1800,
+  Integer $tries                         = 3,
   String $extra_pip_args                 = '',
   $virtualenv                            = undef,
 ) {
@@ -153,6 +157,7 @@ define python::virtualenv (
         command     => "${pip_cmd} --log ${venv_dir}/pip.log install ${pypi_index} ${proxy_flag} --no-binary :all: -r ${requirements} ${extra_pip_args}",
         refreshonly => true,
         timeout     => $timeout,
+        tries       => $tries,
         user        => $owner,
         subscribe   => Exec["python_virtualenv_${venv_dir}"],
         environment => $environment,
