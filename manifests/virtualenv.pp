@@ -53,21 +53,21 @@
 #   }
 #
 define python::virtualenv (
-  String $ensure         = present,
-  String $version        = 'system', # TODO: This doesn't look to work
-  Boolean $requirements  = false,
-  Boolean $systempkgs    = false,
-  String $venv_dir       = $name,
-  Boolean $index         = false,
-  String $owner          = 'root',
-  String $group          = '0',
-  String $mode           = '0755',
-  Array $environment     = [],
-  Array $path            = [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
-  $cwd                   = undef,
-  Integer $timeout       = 1800,
-  String $extra_pip_args = '',
-  $virtualenv            = undef,
+  String $ensure                         = present,
+  String $version                        = 'system', # TODO: This doesn't look to work
+  Variant[Boolean,String] $requirements  = false,
+  Boolean $systempkgs                    = false,
+  String $venv_dir                       = $name,
+  Boolean $index                         = false,
+  String $owner                          = 'root',
+  String $group                          = '0',
+  String $mode                           = '0755',
+  Array $environment                     = [],
+  Array $path                            = [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
+  $cwd                                   = undef,
+  Integer $timeout                       = 1800,
+  String $extra_pip_args                 = '',
+  $virtualenv                            = undef,
 ) {
   include python
 
